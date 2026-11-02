@@ -47,7 +47,8 @@ export type StrapiResponse = {
 
 export type Context = {
   configuration: Configuration;
-  publicationState: 'live' | 'preview';
+  // version of the linked contents to hydrate, the same as the main content's
+  status: 'draft' | 'published';
   skipDeep: boolean;
   populatePaths: string[];
 };

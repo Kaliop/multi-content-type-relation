@@ -90,6 +90,18 @@ The default populate parameter will be *, if you pass the parameter to true, the
 
 Query parameters you can add to any public API `GET` request (`findOne` / `findMany`) to change how MCTR fields are hydrated for that request only.
 
+###### Key: `status`
+
+> `type:` `'draft'` | `'published'` | default: `published`
+
+```
+GET /api/[contentType]/:documentId?status=draft
+```
+
+Strapi's own parameter: linked contents are hydrated in the same version as the main content. With `status=draft`, their
+draft versions are returned, unpublished ones included. The Strapi 4 parameter `publicationState=preview` is still
+accepted and does the same.
+
 ###### Key: `mctrSkipDeep`
 
 > `type:` `'true'` | default: not set

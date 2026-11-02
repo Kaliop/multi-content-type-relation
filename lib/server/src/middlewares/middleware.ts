@@ -90,9 +90,9 @@ export default async (ctx, next) => {
 
   const skipDeep = ctx.request.query?.mctrSkipDeep === 'true';
 
-  const context = {
+  const context: Context = {
     configuration,
-    publicationState: ctx.request.query?.['publicationState'] ?? 'live',
+    status: getStatus(ctx.request.query),
     skipDeep,
     populatePaths: skipDeep ? parsePopulatePaths(ctx.request.query?.mctrPopulate) : []
   };
@@ -103,6 +103,10 @@ export default async (ctx, next) => {
 
   ctx.body.data = hydratedData;
 };
+
+// Strapi 5 selects drafts with status=draft; publicationState=preview is the Strapi 4 parameter, still accepted
+const getStatus = (query: Record<string, unknown> | undefined): Context['status'] =>
+  query?.status === 'draft' || query?.publicationState === 'preview' ? 'draft' : 'published';
 
 const parsePopulatePaths = (value: unknown): string[] =>
   [value]
@@ -176,7 +180,7 @@ const hydrateMRCT = async (
   const promises: Promise<any>[] = [];
   for (const item of Array.from(contentsToFetch)) {
     const [uid, documentId, locale] = item.split('####');
-    const options = { documentId, status: 'published' } as any;
+    const options = { documentId, status: context.status } as any;
     if (locale) {
       options.locale = locale;
     }
@@ -246,7 +250,7 @@ const hydrateMRCT = async (
 
         if (!contentTypeConfiguration) return true;
         if (!contentTypeConfiguration.options?.draftAndPublish) return true;
-        if (context.publicationState === 'preview') return true;
+        if (context.status === 'draft') return true;
 
         return typeof linkedEntry.response?.publishedAt === 'string';
       });
