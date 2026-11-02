@@ -138,6 +138,20 @@ Paths are resolved against each linked content's schema: a path that doesn't exi
 
 Without `mctrSkipDeep=true`, this parameter is ignored.
 
+###### Key: `mctrSkipHydration`
+
+> `type:` `'true'` | default: not set
+
+```
+GET /api/[contentType]/:documentId?mctrSkipHydration=true
+```
+
+When set to `true`, MCTR fields are not hydrated: they are returned as stored, a JSON string of
+`{ uid, documentId, locale, MRCT }` items. For consumers that hydrate them themselves, e.g. while migrating a client
+written for the Strapi 4 version of the plugin.
+
+> Note: only the exact value `true` is taken into account.
+
 ## Submit an issue
 
 You can use github issues to raise an issue about this plugin

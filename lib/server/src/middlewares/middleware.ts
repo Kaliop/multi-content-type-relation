@@ -88,6 +88,9 @@ export default async (ctx, next) => {
   // Allow only findOne/findMany for native contentypes that have api::
   if (!validHandler) return;
 
+  // The consumer hydrates the MCTR fields itself: return them as stored
+  if (ctx.request.query?.mctrSkipHydration === 'true') return;
+
   const skipDeep = ctx.request.query?.mctrSkipDeep === 'true';
 
   const context: Context = {
