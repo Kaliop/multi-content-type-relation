@@ -16,7 +16,8 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     // 1. Discover all fields. 
     for (const schema of allSchemas) {
       for (const [fieldName, attribute] of Object.entries(schema.attributes)) {
-        if (attribute.type === 'richtext' || attribute.type === 'string' || (attribute as any).type === 'customField') {
+        const { type } = attribute as { type: string };
+        if (type === 'richtext' || type === 'string' || type === 'customField') {
           affectedFields.push({
             uid: schema.uid,
             fieldName,
