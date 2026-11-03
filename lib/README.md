@@ -90,6 +90,18 @@ The default populate parameter will be *, if you pass the parameter to true, the
 
 Query parameters you can add to any public API `GET` request (`findOne` / `findMany`) to change how MCTR fields are hydrated for that request only.
 
+###### Key: `status`
+
+> `type:` `'draft'` | `'published'` | default: `published`
+
+```
+GET /api/[contentType]/:documentId?status=draft
+```
+
+Strapi's own parameter: linked contents are hydrated in the same version as the main content. With `status=draft`, their
+draft versions are returned, unpublished ones included. The Strapi 4 parameter `publicationState=preview` is still
+accepted and does the same.
+
 ###### Key: `mctrSkipDeep`
 
 > `type:` `'true'` | default: not set
@@ -125,6 +137,20 @@ Populates only the given dot-notation paths on linked contents, on top of their 
 Paths are resolved against each linked content's schema: a path that doesn't exist on a content type is ignored for it, so the same parameter can be used whatever the linked content types are.
 
 Without `mctrSkipDeep=true`, this parameter is ignored.
+
+###### Key: `mctrSkipHydration`
+
+> `type:` `'true'` | default: not set
+
+```
+GET /api/[contentType]/:documentId?mctrSkipHydration=true
+```
+
+When set to `true`, MCTR fields are not hydrated: they are returned as stored, a JSON string of
+`{ uid, documentId, locale, MRCT }` items. For consumers that hydrate them themselves, e.g. while migrating a client
+written for the Strapi 4 version of the plugin.
+
+> Note: only the exact value `true` is taken into account.
 
 ## Submit an issue
 
