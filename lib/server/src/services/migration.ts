@@ -1,5 +1,7 @@
 import type { Core } from '@strapi/types';
 
+import { toLink } from '../../../shared/links';
+
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
   async migrateV4ToV5() {
     strapi.log.info('🚀 Starting MCTR Data Migration (v4 -> v5)...');
@@ -73,12 +75,8 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
             });
 
             if (targetRow) {
-              newData.push({
-                uid: item.uid,
-                documentId: targetRow.documentId,
-                locale: targetRow.locale,
-                MRCT: true,
-              });
+              // the format the admin input writes (no locale for a non-localized type)
+              newData.push(toLink(item.uid, targetRow.documentId, targetRow.locale));
               rowUpdated = true;
               totalMigratedRelations++;
             } else {

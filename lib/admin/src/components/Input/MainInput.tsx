@@ -21,6 +21,7 @@ import {
   validateCurrentRelations
 } from '../../helpers/content';
 import useTranslate from '../../hooks/useTranslate';
+import { isSameLinkList } from '../../../../shared/links';
 
 type Props = {
   name: string;
@@ -60,13 +61,21 @@ const MainInput = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const value =
+    // the stored value is still being validated: `selected` isn't loaded yet
+    if (loading) return;
+
+    const entries =
       selected.length > maximumItems || selected.length < minimumItems
         ? []
         : selected;
+    const newValue = formatToStrapiField(entries, currentLocale);
 
-    onChange({ target: { name, value: formatToStrapiField(value, currentLocale) } });
-  }, [selected]);
+    // same links as the stored value: keep it as is, opening an entry must not modify it (a migrated value has
+    // another key order, and the linked entries' locale)
+    if (isSameLinkList(newValue, value)) return;
+
+    onChange({ target: { name, value: newValue } });
+  }, [selected, loading]);
 
   const hint = useMemo(() => {
     const minLabel =
