@@ -1,5 +1,7 @@
 import type { Core } from '@strapi/types';
 
+import { toLink } from '../../../shared/links';
+
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
   async migrateV4ToV5() {
     strapi.log.info('🚀 Starting MCTR Data Migration (v4 -> v5)...');
@@ -16,7 +18,8 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     // 1. Discover all fields. 
     for (const schema of allSchemas) {
       for (const [fieldName, attribute] of Object.entries(schema.attributes)) {
-        if (attribute.type === 'richtext' || attribute.type === 'string' || (attribute as any).type === 'customField') {
+        const { type } = attribute as { type: string };
+        if (type === 'richtext' || type === 'string' || type === 'customField') {
           affectedFields.push({
             uid: schema.uid,
             fieldName,
@@ -72,12 +75,8 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
             });
 
             if (targetRow) {
-              newData.push({
-                uid: item.uid,
-                documentId: targetRow.documentId,
-                locale: targetRow.locale,
-                MRCT: true,
-              });
+              // the format the admin input writes (no locale for a non-localized type)
+              newData.push(toLink(item.uid, targetRow.documentId, targetRow.locale));
               rowUpdated = true;
               totalMigratedRelations++;
             } else {
