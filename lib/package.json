@@ -1,6 +1,6 @@
 {
   "name": "multi-content-type-relation",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "A multi content type relation plugin for Strapi 5.",
   "license": "MIT",
   "author": {
@@ -38,7 +38,8 @@
     "verify": "strapi-plugin verify",
     "test:ts:front": "run -T tsc -p lib/admin/tsconfig.json",
     "test:ts:back": "run -T tsc -p lib/server/tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "npm test && npm run build && npm run verify"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.0.8",

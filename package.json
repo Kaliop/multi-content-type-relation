@@ -1,6 +1,7 @@
 {
   "name": "multi-content-type-relation",
-  "version": "2.6.0",
+  "version": "2.6.1",
+  "private": true,
   "directories": {
     "example": "example",
     "lib": "lib"
