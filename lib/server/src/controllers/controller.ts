@@ -215,7 +215,12 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
           findOneOptions.locale = locale
         }
 
-        const document = await strapi.documents(sourceUid).findOne(findOneOptions);
+        const document =
+          (await strapi.documents(sourceUid).findOne(findOneOptions)) ??
+          (await strapi.documents(sourceUid).findOne({ ...findOneOptions, status: 'draft' }));
+
+        // The relation row can outlive its source document
+        if (!document) return null;
 
         const searchableField = strapi
           .plugin('multi-content-type-relation')
