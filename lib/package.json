@@ -1,6 +1,6 @@
 {
   "name": "multi-content-type-relation",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "description": "A multi content type relation plugin for Strapi 5.",
   "license": "MIT",
   "author": {
@@ -51,8 +51,8 @@
   },
   "devDependencies": {
     "@strapi/sdk-plugin": "^5.3.2",
-    "@strapi/strapi": "^5.16.1",
-    "@strapi/typescript-utils": "^5.16.1",
+    "@strapi/strapi": "^5.60.0",
+    "@strapi/typescript-utils": "^5.60.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "prettier": "^3.6.2",
@@ -64,7 +64,6 @@
     "vitest": "^3.2.7"
   },
   "peerDependencies": {
-    "@strapi/sdk-plugin": "^5.3.2",
     "@strapi/strapi": "^5.16.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

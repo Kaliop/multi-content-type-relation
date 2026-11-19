@@ -3,8 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { formatToStrapiField } from '../admin/src/helpers/format';
 import { isSameLinkList, toLink } from '../shared/links';
 
-const entry = (uid: string, documentId: string) =>
-  ({ uid, displayName: '', searchableField: '', item: { id: '1', documentId } }) as any;
+const entry = (uid: string, documentId: string, locale?: string) =>
+  ({ uid, displayName: '', searchableField: '', item: { id: '1', documentId, locale } }) as any;
 
 describe('toLink', () => {
   it('writes uid, documentId, MRCT, locale, in that order', () => {
@@ -24,9 +24,15 @@ describe('formatToStrapiField', () => {
     expect(formatToStrapiField([], 'fr')).toBe('');
   });
 
-  it('writes the links with the edited locale', () => {
+  it('writes the links with the edited locale when the linked entries have none', () => {
     expect(formatToStrapiField([entry('api::article.article', 'a'), entry('api::author.author', 'b')], 'fr')).toBe(
       JSON.stringify([toLink('api::article.article', 'a', 'fr'), toLink('api::author.author', 'b', 'fr')])
+    );
+  });
+
+  it('keeps the locale of each linked entry, not the edited one', () => {
+    expect(formatToStrapiField([entry('api::article.article', 'a', 'en'), entry('api::article.article', 'b', 'fr')], 'fr')).toBe(
+      JSON.stringify([toLink('api::article.article', 'a', 'en'), toLink('api::article.article', 'b', 'fr')])
     );
   });
 });

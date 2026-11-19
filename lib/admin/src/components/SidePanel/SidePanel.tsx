@@ -61,7 +61,7 @@ const SidePanel: React.FC<SidePanelProps> = () => {
     const fetchConfiguration = async () => {
       const { get } = getFetchClient();
 
-      const response = await get(`/${pluginId}/get-configuration`);
+      const response = await get<{ disableRevertRelations?: boolean }>(`/${pluginId}/get-configuration`);
 
       if (response.data.disableRevertRelations) {
         setDisabledFeature(true);

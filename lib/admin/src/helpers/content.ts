@@ -7,6 +7,7 @@ import {
   MatchingContentResponse,
   SelectedEntry,
 } from '../interface';
+import { LightContentType } from './storage';
 
 export const fetchMatchingContent = async (
   keyword: string,
@@ -53,7 +54,7 @@ export const validateCurrentRelations = async (
 export const listContentTypes = async () => {
   try {
     const { get } = getFetchClient();
-    const response = await get(`/${pluginId}/list-content-types`);
+    const response = await get<LightContentType[]>(`/${pluginId}/list-content-types`);
 
     return response.data;
   } catch (error) {

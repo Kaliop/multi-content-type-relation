@@ -27,9 +27,9 @@ const linkedEntries = (value: string | null | undefined): string[] | undefined =
 };
 
 /**
- * Whether two stored values link the same entries, in the same order. The locale is not compared: the input writes
- * the locale of the edited entry, a migrated value holds the locale of the linked entry (none for a non-localized
- * type), for the same link. Values that aren't link lists are compared as strings.
+ * Whether two stored values link the same entries, in the same order. The locale is not compared: for the same link,
+ * the input writes the edited locale when the linked entry has none (non-localized type), a migrated value none.
+ * Values that aren't link lists are compared as strings.
  */
 export const isSameLinkList = (a: string | null | undefined, b: string | null | undefined): boolean => {
   const [entriesA, entriesB] = [linkedEntries(a), linkedEntries(b)];

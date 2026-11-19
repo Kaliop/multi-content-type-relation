@@ -8,8 +8,10 @@ export const flattenObj = (
 ) => {
   for (let key in obj) {
     let propName = parent ? parent + '.' + key : key;
-    if (typeof obj[key] == 'object') {
-      flattenObj(obj[key], propName, res);
+    const value = obj[key];
+    // null, a date, an empty list or object are values: walking into them dropped them from the response
+    if (value !== null && typeof value == 'object' && !(value instanceof Date) && Object.keys(value).length > 0) {
+      flattenObj(value, propName, res);
     } else {
       res[propName] = obj[key];
     }
