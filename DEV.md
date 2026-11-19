@@ -20,7 +20,7 @@ $ cd lib && npm test
 ```
 
 Unit tests (Vitest) live in `lib/tests`. GitHub Actions runs them on every pull request and on `master`, with the
-type checks, the build and `strapi-plugin verify` (`.github/workflows/tests.yml`).
+type checks, the build and `strapi-plugin verify`, on Node 20, 22, 24 and 26 (`.github/workflows/tests.yml`).
 
 # Publishing
 
