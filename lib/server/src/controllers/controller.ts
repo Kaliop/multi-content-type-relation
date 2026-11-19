@@ -103,8 +103,9 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
         .then((result) => {
           
           if (!result) {
-            // Try with draft mode
-            return strapi.documents(entry.uid as any).findFirst({ 
+            // Not published: the draft of the same document (findFirst without the documentId returned any draft)
+            return strapi.documents(entry.uid as any).findOne({
+              ...findOneOptions,
               status: 'draft'
             }).then((result) => {
               return {
